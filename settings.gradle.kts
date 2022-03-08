@@ -1,3 +1,2 @@
-
-rootProject.name = "fintech_kotlin"
+rootProject.name = "HomeWork3"
 

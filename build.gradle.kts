@@ -1,11 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.21"
-    application
+    kotlin("jvm") version "1.6.10"
 }
 
-group = "me.sasha"
+group = "org.example"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -13,17 +12,13 @@ repositories {
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
-}
+    implementation(kotlin("stdlib"))
 
+    testImplementation(platform("org.junit:junit-bom:5.8.2"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+
+    testImplementation("io.mockk:mockk:1.12.3")
+}
 tasks.test {
-    useJUnit()
-}
-
-tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "1.6"
-}
-
-application {
-    mainClassName = "MainKt"
+    useJUnitPlatform()
 }
