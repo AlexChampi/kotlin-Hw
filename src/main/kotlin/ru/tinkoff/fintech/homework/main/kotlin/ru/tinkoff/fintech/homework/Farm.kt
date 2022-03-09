@@ -45,12 +45,12 @@ class Farm(private val array: Array<Animal>) {
         }
     }
 
-    fun showNames(): Boolean {
+    fun showNames() {
         for (animal in array) {
             println(animal.getName())
         }
-        return true
     }
+
 
 }
 
