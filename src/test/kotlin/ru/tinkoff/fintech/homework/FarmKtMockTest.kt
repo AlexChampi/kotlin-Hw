@@ -20,7 +20,9 @@ class FarmKtMockTest {
         every { animal.getName() } returns "Animal"
         val animalArray = arrayOf(animal)
         val farm = Farm(animalArray)
+
         farm.showNames()
+        
         assertEquals(animalArray.size, farm.countAnimal())
         verify(exactly = farm.countAnimal()) { animal.getName() }
     }

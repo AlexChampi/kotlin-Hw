@@ -9,10 +9,10 @@ class FarmKtUnitTest {
 
 
     @Test
-    @DisplayName("Cow name")
     fun `cow name`() {
         val cowName = "Marusyia"
         val cow = Cow(cowName)
+
         assertEquals(cowName, cow.getName());
     }
 
@@ -21,6 +21,7 @@ class FarmKtUnitTest {
         val pigName = "Pepa"
         val pigWeight = 150
         val pig = Pig(pigName, pigWeight)
+
         assertEquals(pigName, pig.getName())
         assertEquals(pigWeight, pig.getWeight())
     }
