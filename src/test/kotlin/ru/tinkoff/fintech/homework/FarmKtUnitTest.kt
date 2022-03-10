@@ -4,31 +4,24 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-internal class FarmKtUnitTest {
 
-    private val cowName = "Marusyia"
-    private val cow = Cow(cowName)
+class FarmKtUnitTest {
+
 
     @Test
     @DisplayName("Cow name")
-    fun `cow name test`() {
+    fun `cow name`() {
+        val cowName = "Marusyia"
+        val cow = Cow(cowName)
         assertEquals(cowName, cow.getName());
     }
 
-    private val pigName = "Pepa"
-    private val pigWeight = 150
-    private val pig = Pig(pigName, pigWeight)
-
     @Test
-    @DisplayName("Pig name")
-    fun `pig name tests`() {
+    fun `pig methods`() {
+        val pigName = "Pepa"
+        val pigWeight = 150
+        val pig = Pig(pigName, pigWeight)
         assertEquals(pigName, pig.getName())
-    }
-
-    @Test
-    @DisplayName("Pig weight")
-    fun `pig weight tests`() {
         assertEquals(pigWeight, pig.getWeight())
     }
-
 }

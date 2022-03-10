@@ -15,18 +15,13 @@ import org.junit.jupiter.api.extension.ExtendWith
 class FarmKtMockTest {
 
     @Test
-    fun `Farm mockk tests`() {
+    fun `Farm show names`() {
         val animal = mockk<Animal>()
         every { animal.getName() } returns "Animal"
-
         val animalArray = arrayOf(animal)
         val farm = Farm(animalArray)
-
         farm.showNames()
-
-        assertAll(
-            { assertEquals(animalArray.size, farm.countAnimal()) },
-            { verify(exactly = farm.countAnimal()) { animal.getName() } }
-        )
+        assertEquals(animalArray.size, farm.countAnimal())
+        verify(exactly = farm.countAnimal()) { animal.getName() }
     }
 }
