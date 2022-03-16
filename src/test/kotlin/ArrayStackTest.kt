@@ -1,34 +1,34 @@
 import org.junit.jupiter.api.Test;
-import ru.tinkof.fintech.kotlin.collections.*
+import ru.tinkoff.fintech.kotlin.collections.ArrayStack
 import kotlin.test.*
 
 class ArrayStackTest {
     @Test
     fun stackPush() {
-        val stack1 = ArrayStack<Int>()
+        val stack = ArrayStack<Int>()
         val s = 5
 
         for (i in 1..s) {
-            stack1.push(i)
+            stack.push(i)
         }
 
-        assertEquals(s, stack1.size)
-        assertFalse(stack1.isEmpty())
+        assertEquals(s, stack.size)
+        assertFalse(stack.isEmpty())
     }
 
     @Test
     fun stackPop() {
-        val stack2 = ArrayStack<Int>()
+        val stack = ArrayStack<Int>()
         val s = 5
 
         for (i in 1..s) {
-            stack2.push(i)
+            stack.push(i)
         }
 
         for (i in s downTo 1) {
-            assertEquals(i, stack2.pop())
+            assertEquals(i, stack.pop())
         }
-        assertTrue(stack2.isEmpty())
+        assertTrue(stack.isEmpty())
     }
 
 }
