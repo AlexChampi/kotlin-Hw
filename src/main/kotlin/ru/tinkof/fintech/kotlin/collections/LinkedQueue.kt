@@ -2,47 +2,40 @@ package ru.tinkof.fintech.kotlin.collections
 
 import java.util.NoSuchElementException
 
-class LinkedQueue {
-    class Node(var element: Any?, var prev: Node?)
+class LinkedQueue<T> : Queue<T> {
+    class Node(var element: Any? = null, var prev: Node? = null)
 
-    private var head = Node(null, null)
+    private var head = Node()
     private var tail = head
-    private var size = 0
+    var size = 0
+        private set
 
-    fun enqueue(element: Any?) {
-        require(element != null) { "element must be not null" }
+    override fun enqueue(element: Any) {
         tail.element = element
-        tail.prev = Node(null, null)
+        tail.prev = Node()
         tail = tail.prev!!
         size++
     }
 
-    fun dequeue() {
-        assert(size >= 1) { throw NoSuchElementException() }
+    override fun dequeue() {
+        require(size >= 1) { "queue is empty!" }
         head = head.prev!!
         size--
     }
 
-    fun getHead(): Any {
-        assert(size >= 1) { throw NoSuchElementException() }
+    override fun getTop(): Any {
+        require(size >= 1) { "queue is empty!" }
         return head.element!!
     }
 
     fun clear() {
         size = 0
-        this.head = Node(null, null)
+        this.head = Node()
         this.tail = head
     }
 
-    fun create(): LinkedQueue {
-        return LinkedQueue()
-    }
-
-    fun isEmpty(): Boolean {
+    override fun isEmpty(): Boolean {
         return size == 0
     }
 
-    fun size(): Int {
-        return this.size
-    }
 }
