@@ -30,7 +30,7 @@ class LinkedQueue<T> : Queue<T> {
         return result!!
     }
 
-    override fun top(): T? {
+    override fun peek(): T? {
         return head.element
     }
 
@@ -44,10 +44,17 @@ class LinkedQueue<T> : Queue<T> {
         if (head.element == null) {
             throw NoSuchElementException()
         } else {
-            return head.element!!
+            return peek() as T
         }
     }
 
+    override fun roll(): T? {
+        val resul = peek()
+        head = head.prev!!
+        size--
+        return resul
+
+    }
     override fun isEmpty(): Boolean {
         return size == 0
     }

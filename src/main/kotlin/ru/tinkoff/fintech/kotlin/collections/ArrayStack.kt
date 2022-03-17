@@ -1,6 +1,6 @@
 package ru.tinkoff.fintech.kotlin.collections
 
-class ArrayStack<T: Any> : Stack<T> {
+class ArrayStack<T : Any> : Stack<T> {
     private var elements = arrayOfNulls<Any>(10)
     var size: Int = 0
         private set
@@ -17,15 +17,15 @@ class ArrayStack<T: Any> : Stack<T> {
     }
 
 
-    override fun pop(): Any {
+    override fun pop(): T {
         if (isEmpty()) {
             throw NoSuchElementException()
         }
-        return elements[--size]!!
+        return elements[--size] as T
     }
 
-    override fun top(): Any? {
-        return elements[size - 1]
+    override fun peek(): T {
+        return elements[size - 1] as T
     }
 
     override fun isEmpty(): Boolean {
