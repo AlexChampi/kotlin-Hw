@@ -17,11 +17,11 @@ class ArrayStack<T: Any> : Stack<T> {
     }
 
 
-    override fun pop(): Any? {
+    override fun pop(): Any {
         if (isEmpty()) {
             throw NoSuchElementException()
         }
-        return elements[--size]
+        return elements[--size]!!
     }
 
     override fun top(): Any? {
