@@ -30,10 +30,7 @@ class LinkedQueue<T> : Queue<T> {
         return result!!
     }
 
-    override fun peek(): T? {
-        if (isEmpty()) {
-            throw(java.util.NoSuchElementException())
-        }
+    override fun top(): T? {
         return head.element
     }
 
@@ -44,7 +41,11 @@ class LinkedQueue<T> : Queue<T> {
     }
 
     override fun elemnent(): T {
-        return head.element!!
+        if (head.element == null) {
+            throw NoSuchElementException()
+        } else {
+            return head.element!!
+        }
     }
 
     override fun isEmpty(): Boolean {
