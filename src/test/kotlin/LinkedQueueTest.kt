@@ -8,31 +8,31 @@ class LinkedQueueTest {
 
     @Test
     fun queueEnqueue() {
-        val queue1 = LinkedQueue<Int>()
+        val queue = LinkedQueue<Int>()
         val s = 5
 
         for (i in 1..s) {
-            queue1.offer(i)
+            queue.offer(i)
         }
 
-        assertEquals(s, queue1.size)
-        assertFalse(queue1.isEmpty())
+        assertEquals(s, queue.size)
+        assertFalse(queue.isEmpty())
     }
 
     @Test
     fun queueDequeue() {
-        val queue2 = LinkedQueue<Int>()
+        val queue = LinkedQueue<Int>()
         val s = 5
 
         for (i in 1..s) {
-            queue2.offer(i)
+            queue.offer(i)
         }
 
         for (i in 1..s) {
-            assertEquals(i, queue2.peek())
-            queue2.remove()
+            assertEquals(i, queue.peek())
+            queue.remove()
         }
-        assertEquals(0, queue2.size)
-        assertTrue(queue2.isEmpty())
+        assertEquals(0, queue.size)
+        assertTrue(queue.isEmpty())
     }
 }
