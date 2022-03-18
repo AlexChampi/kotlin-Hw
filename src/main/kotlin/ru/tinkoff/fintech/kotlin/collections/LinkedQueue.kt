@@ -1,6 +1,6 @@
 package ru.tinkoff.fintech.kotlin.collections
 
-class LinkedQueue<T> : Queue<T> {
+class LinkedQueue<T : Any> : Queue<T> {
     class Node<T>(var element: T? = null, var prev: Node<T>? = null)
 
     private var head = Node<T>()
@@ -21,13 +21,12 @@ class LinkedQueue<T> : Queue<T> {
     }
 
     override fun remove(): T {
-        if (isEmpty()) {
-            throw(java.util.NoSuchElementException())
-        }
-        val result = head.element
+        if (isEmpty()) throw NoSuchElementException()
+
+        val result = head.element!!
         head = head.prev!!
         size--
-        return result!!
+        return result
     }
 
     override fun peek(): T? {
@@ -36,25 +35,20 @@ class LinkedQueue<T> : Queue<T> {
 
     fun clear() {
         size = 0
-        this.head = Node()
-        this.tail = head
+        head = Node()
+        tail = head
     }
 
-    override fun elemnent(): T {
-        if (head.element == null) {
-            throw NoSuchElementException()
-        } else {
-            return peek() as T
-        }
-    }
+    override fun elemnent(): T = peek() ?: throw NoSuchElementException()
 
-    override fun roll(): T? {
-        val resul = peek()
+    override fun poll(): T? {
+        val result = head.element
         head = head.prev!!
         size--
-        return resul
+        return result
 
     }
+
     override fun isEmpty(): Boolean {
         return size == 0
     }

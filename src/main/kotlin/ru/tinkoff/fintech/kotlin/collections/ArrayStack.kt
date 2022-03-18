@@ -17,20 +17,13 @@ class ArrayStack<T : Any> : Stack<T> {
     }
 
 
-    override fun pop(): T {
-        if (isEmpty()) {
-            throw NoSuchElementException()
-        }
-        return elements[--size] as T
-    }
+    override fun pop(): T = if (isEmpty()) throw NoSuchElementException() else elements[--size] as T
 
-    override fun peek(): T {
-        return elements[size - 1] as T
-    }
 
-    override fun isEmpty(): Boolean {
-        return size == 0
-    }
+    override fun peek(): T? = if (size - 1 < 0) null else elements[size - 1] as T?
+
+
+    override fun isEmpty(): Boolean = size == 0
 
 }
 

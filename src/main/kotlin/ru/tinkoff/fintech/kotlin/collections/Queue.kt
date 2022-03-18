@@ -5,6 +5,6 @@ interface Queue<T> {
     fun remove(): T
     fun peek(): T?
     fun elemnent(): T
-    fun roll(): T?
+    fun poll(): T?
     fun isEmpty(): Boolean
 }
