@@ -6,13 +6,15 @@ class AutomobileServiceTests {
 
     @Test
     fun internationFormat() {
-        val automobileService = AutomobileService(convertor)
 
         val result = automobileService.internationalFormatSort(list)
 
         val expectedResult = listOf(
-            convertor.convert(auto4), convertor.convert(auto5), convertor.convert(auto1),
-            convertor.convert(auto3), convertor.convert(auto2)
+            auto4.copy(model = dictionary.getValue(auto4.model), price = auto4.price / rate),
+            auto5.copy(model = dictionary.getValue(auto5.model), price = auto5.price / rate),
+            auto1.copy(model = dictionary.getValue(auto1.model), price = auto1.price / rate),
+            auto3.copy(model = dictionary.getValue(auto3.model), price = auto3.price / rate),
+            auto2.copy(model = dictionary.getValue(auto2.model), price = auto2.price / rate)
         )
         assertEquals(expectedResult, result)
 
@@ -20,7 +22,7 @@ class AutomobileServiceTests {
 
     @Test
     fun grouping() {
-        val automobileService = AutomobileService(convertor)
+
 
         val result = automobileService.bodyGrouping(list)
 
@@ -35,7 +37,7 @@ class AutomobileServiceTests {
 
     @Test
     fun filtration() {
-        val automobileService = AutomobileService(convertor)
+
 
         val result = automobileService.yearFiltration(list, 2018)
 
@@ -61,5 +63,8 @@ class AutomobileServiceTests {
         "Мини" to "Mini"
     )
     val dict = Dictionary(dictionary)
-    val convertor = Convertor(dict, 110)
+    val rate = 110
+    val convertor = Convertor(dict, rate)
+    val automobileService = AutomobileService(convertor)
+
 }
