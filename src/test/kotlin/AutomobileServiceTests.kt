@@ -8,17 +8,19 @@ class AutomobileServiceTests {
     val auto3 = Automobile("БМВ", "M5", "Coupe", 7_000_000, 9, 2019)
     val auto4 = Automobile("Лада", "XRay", "CUV", 1_200_000, 10, 2020)
     val auto5 = Automobile("Мини", "Countryman", "Hatchback", 3_000_000, 6, 2018)
-
+    val dict = Dictionary()
+    val convertor = Convertor(dict, 110)
 
     @Test
     fun internationFormat() {
         val list = listOf(auto1, auto2, auto3, auto4, auto5)
+        val automobileService = AutomobileService(convertor)
 
-        val result = AutomobileService().internationalFormatSort(list)
+        val result = automobileService.internationalFormatSort(list)
 
         val expectedResult = listOf(
-            Convertor().convert(auto4), Convertor().convert(auto5), Convertor().convert(auto1),
-            Convertor().convert(auto3), Convertor().convert(auto2)
+            convertor.convert(auto4), convertor.convert(auto5), convertor.convert(auto1),
+            convertor.convert(auto3), convertor.convert(auto2)
         )
         assertEquals(expectedResult, result)
 
@@ -27,8 +29,9 @@ class AutomobileServiceTests {
     @Test
     fun grouping() {
         val list = listOf(auto1, auto2, auto3, auto4, auto5)
+        val automobileService = AutomobileService(convertor)
 
-        val result = AutomobileService().bodyGrouping(list)
+        val result = automobileService.bodyGrouping(list)
 
         val expectedResult = mapOf(
             "SUV" to listOf(auto1),
@@ -42,8 +45,9 @@ class AutomobileServiceTests {
     @Test
     fun filtration() {
         val list = listOf(auto1, auto2, auto3, auto4, auto5)
+        val automobileService = AutomobileService(convertor)
 
-        val result = AutomobileService().yearFiltration(list, 2018)
+        val result = automobileService.yearFiltration(list, 2018)
 
         val expectedResult = listOf(
             "Мини Countryman was assembled in 2018",

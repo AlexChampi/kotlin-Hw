@@ -1,9 +1,10 @@
 package ru.tinkoff.fintech.hw5
 
 
-class AutomobileService {
+class AutomobileService(private val convertor: Convertor) {
+
     fun internationalFormatSort(list: List<Automobile>): List<Automobile> =
-        list.asSequence().sortedBy { it.price }.map { Convertor().convert(it) }.toList()
+        list.asSequence().sortedBy { it.price }.map { convertor.convert(it) }.toList()
 
     fun bodyGrouping(list: List<Automobile>): Map<String, List<Automobile>> = list.groupBy { it.body }
 

@@ -10,6 +10,6 @@ class Dictionary {
             "Мини" to "Mini"
         )
 
-    fun getWord(string: String): String = dict[string]!!
+    fun getWord(string: String): String = dict.getValue(string)
 
 }
