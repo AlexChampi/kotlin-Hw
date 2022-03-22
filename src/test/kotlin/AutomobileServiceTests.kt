@@ -3,17 +3,9 @@ import org.junit.jupiter.api.Test
 import ru.tinkoff.fintech.hw5.*
 
 class AutomobileServiceTests {
-    val auto1 = Automobile("Форд", "Raptor", "SUV", 5_000_000, 15, 2010)
-    val auto2 = Automobile("Бентли", "Continental", "Coupe", 20_000_000, 7, 2016)
-    val auto3 = Automobile("БМВ", "M5", "Coupe", 7_000_000, 9, 2019)
-    val auto4 = Automobile("Лада", "XRay", "CUV", 1_200_000, 10, 2020)
-    val auto5 = Automobile("Мини", "Countryman", "Hatchback", 3_000_000, 6, 2018)
-    val dict = Dictionary()
-    val convertor = Convertor(dict, 110)
 
     @Test
     fun internationFormat() {
-        val list = listOf(auto1, auto2, auto3, auto4, auto5)
         val automobileService = AutomobileService(convertor)
 
         val result = automobileService.internationalFormatSort(list)
@@ -28,7 +20,6 @@ class AutomobileServiceTests {
 
     @Test
     fun grouping() {
-        val list = listOf(auto1, auto2, auto3, auto4, auto5)
         val automobileService = AutomobileService(convertor)
 
         val result = automobileService.bodyGrouping(list)
@@ -44,7 +35,6 @@ class AutomobileServiceTests {
 
     @Test
     fun filtration() {
-        val list = listOf(auto1, auto2, auto3, auto4, auto5)
         val automobileService = AutomobileService(convertor)
 
         val result = automobileService.yearFiltration(list, 2018)
@@ -56,4 +46,20 @@ class AutomobileServiceTests {
         )
         assertEquals(expectedResult, result)
     }
+
+    val auto1 = Automobile("Форд", "Raptor", "SUV", 5_000_000, 15, 2010)
+    val auto2 = Automobile("Бентли", "Continental", "Coupe", 20_000_000, 7, 2016)
+    val auto3 = Automobile("БМВ", "M5", "Coupe", 7_000_000, 9, 2019)
+    val auto4 = Automobile("Лада", "XRay", "CUV", 1_200_000, 10, 2020)
+    val auto5 = Automobile("Мини", "Countryman", "Hatchback", 3_000_000, 6, 2018)
+    val list = listOf(auto1, auto2, auto3, auto4, auto5)
+    private val dictionary = mapOf(
+        "Форд" to "Ford",
+        "Бентли" to "Bentley",
+        "БМВ" to "BMW",
+        "Лада" to "Lada",
+        "Мини" to "Mini"
+    )
+    val dict = Dictionary(dictionary)
+    val convertor = Convertor(dict, 110)
 }
