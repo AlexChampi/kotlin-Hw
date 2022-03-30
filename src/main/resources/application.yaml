@@ -1,0 +1,8 @@
+spring:
+  application.name: spring-demo
+  profiles.active: dev
+server.port: 9020
+
+wash.prices: http://localhost:9002
+storage.address: http://localhost:9002
+ledger.address: http://localhost:9002
