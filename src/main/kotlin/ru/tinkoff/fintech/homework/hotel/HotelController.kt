@@ -1,16 +1,15 @@
-package ru.tinkoff.fintech.homework
+package ru.tinkoff.fintech.homework.hotel
 
-import io.swagger.v3.oas.annotations.Parameter
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import ru.tinkoff.fintech.homework.hotel.service.Reception
+import ru.tinkoff.fintech.homework.model.Room
 
 @RestController
 @RequestMapping("/hotel")
-class Hotel(private val reception: Reception) {
+class HotelController(private val reception: Reception) {
 
     @GetMapping("/check-in")
     fun checkIn(@RequestParam type: String): Room? =

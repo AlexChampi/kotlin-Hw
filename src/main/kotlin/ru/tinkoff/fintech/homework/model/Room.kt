@@ -1,4 +1,4 @@
-package ru.tinkoff.fintech.homework
+package ru.tinkoff.fintech.homework.model
 
 data class Room(
     val number: Int?,

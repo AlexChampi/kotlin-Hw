@@ -1,12 +1,11 @@
-package ru.tinkoff.fintech.homework
+package ru.tinkoff.fintech.homework.hotel.service.client
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
 import org.springframework.web.client.getForObject
 import org.springframework.web.client.*
-import org.springframework.web.client.HttpClientErrorException.NotFound
-import kotlin.reflect.jvm.internal.impl.util.ModuleVisibilityHelper.EMPTY
+import ru.tinkoff.fintech.homework.model.Room
 
 @Service
 class RoomClient(

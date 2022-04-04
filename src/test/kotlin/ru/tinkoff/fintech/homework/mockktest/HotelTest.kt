@@ -18,8 +18,8 @@ import io.mockk.every
 import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.ResultActionsDsl
 import org.springframework.test.web.servlet.get
-import ru.tinkoff.fintech.homework.Room
-import ru.tinkoff.fintech.homework.RoomClient
+import ru.tinkoff.fintech.homework.model.Room
+import ru.tinkoff.fintech.homework.hotel.service.client.RoomClient
 
 
 @SpringBootTest
