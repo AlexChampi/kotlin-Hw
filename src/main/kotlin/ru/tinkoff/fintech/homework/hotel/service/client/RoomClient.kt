@@ -12,14 +12,19 @@ class RoomClient(
     private val restTemplate: RestTemplate,
     @Value("\${room.address}") private val roomAddress: String
 ) {
-    fun getRoomForCheckIn(): Set<Room> =
-        restTemplate.exchange<Set<Room>>("$roomAddress$GET_FREE_ROOM", HttpMethod.GET).body.orEmpty()
+    fun getRoomForCheckIn(type: String): Room? =
+        restTemplate.getForObject("$roomAddress$GET_FREE_ROOM", type)
 
 
-    fun getRoomByNumber(number: Int): Room =
-        restTemplate.getForObject("$roomAddress$GET_ROOM_BY_NUMBER", number)!!
+    fun getRoomByNumber(number: Int): Room? =
+        restTemplate.getForObject("$roomAddress$GET_ROOM_BY_NUMBER", number)
+
+    fun changeStatus(number: Int, status: String) {
+        restTemplate.patchForObject<Room>("$roomAddress$PATCH_CHANGE_STATUS", number, status)
+    }
 }
 
 
-private const val GET_FREE_ROOM = "/room/type"
+private const val GET_FREE_ROOM = "/room/{type}"
 private const val GET_ROOM_BY_NUMBER = "/room/{number}"
+private const val PATCH_CHANGE_STATUS = "/room/{number}&{status}"

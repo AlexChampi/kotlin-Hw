@@ -9,15 +9,13 @@ import io.kotest.core.test.TestResult
 import io.mockk.clearAllMocks
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.web.servlet.MockMvc
 import io.kotest.core.extensions.Extension
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import org.springframework.http.HttpStatus
-import org.springframework.test.web.servlet.ResultActionsDsl
-import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.*
 import ru.tinkoff.fintech.homework.model.Room
 import ru.tinkoff.fintech.homework.hotel.service.client.RoomClient
 
@@ -31,8 +29,11 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
     override fun extensions(): List<Extension> = listOf(SpringExtension)
 
     override fun beforeEach(testCase: TestCase) {
-        every { roomClient.getRoomForCheckIn() } answers { listOfRoom }
+        every { roomClient.getRoomForCheckIn(any()) } answers { listOfRoom.find { it.type == firstArg() } }
         every { roomClient.getRoomByNumber(any()) } answers { listOfRoom.find { it.number == firstArg() }!! }
+        every { roomClient.changeStatus(any(), any()) } answers {
+            listOfRoom.find { it.number == firstArg() }!!.status = secondArg()
+        }
 
 
     }
@@ -46,29 +47,24 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
             scenario("success") {
                 val room = checkIn("deluxe")
 
+                if (room.status == "free") changeStatus(room.number, "occupied")
+
                 room should {
                     it.number shouldBe 3
                     it.type shouldBe "deluxe"
                     it.pricePerNight shouldBe 20.0
-                    it.status shouldBe "occupied"
-                }
-            }
-
-            scenario("failed") {
-                val room = checkIn("deluxe")
-
-                room should {
-                    it.number shouldBe null
-                    it.type shouldBe null
-                    it.pricePerNight shouldBe null
-                    it.status shouldBe null
+                    it.status shouldBe "free"
                 }
             }
         }
         feature("check out") {
             scenario("success") {
-                checkOut(1) shouldBe true
-                listOfRoom.find { it.status == "free" }
+                val room = checkOut(1)
+
+                if (room.status == "occupied") changeStatus(room.number, "free")
+
+                room.status shouldBe "occupied"
+
             }
         }
 
@@ -78,8 +74,12 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
     fun checkIn(type: String, status: HttpStatus = HttpStatus.OK): Room =
         mockMvc.get("/hotel/check-in?type={type}", type).readResponse()
 
-    fun checkOut(number: Int, status: HttpStatus = HttpStatus.OK): Boolean =
+    fun checkOut(number: Int, status: HttpStatus = HttpStatus.OK): Room =
         mockMvc.get("/hotel/check-out?number={number}", number).readResponse()
+
+    fun changeStatus(number: Int, status: String) {
+        mockMvc.patch("/hotel/change-status?number={number}&status={status}", number, status)
+    }
 
 
     private inline fun <reified T> ResultActionsDsl.readResponse(expectedStatus: HttpStatus = HttpStatus.OK): T = this
@@ -88,7 +88,7 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
         .let { if (T::class == String::class) it as T else objectMapper.readValue(it) }
 
 
-    val listOfRoom = setOf(
+    var listOfRoom = mutableSetOf(
         Room(1, "standard", 10.0, "occupied"),
         Room(2, "standard", 10.0, "free"),
         Room(3, "deluxe", 20.0, "free"),

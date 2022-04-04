@@ -8,16 +8,19 @@ import ru.tinkoff.fintech.homework.model.Room
 @Service
 class Reception(private val roomClient: RoomClient) {
     fun checkIn(type: String): Room {
-        val setOfRoom = roomClient.getRoomForCheckIn()
-        val result = setOfRoom.find { it.type == type && it.status == "free" } ?: return Room(null, null, null, null)
-        result.status = "occupied"
+        val result = roomClient.getRoomForCheckIn(type)
+        requireNotNull(result) { "No such room" }
         return result
     }
 
-    fun checkOut(number: Int): Boolean {
+    fun checkOut(number: Int): Room {
         val room = roomClient.getRoomByNumber(number)
-        room.status = "free"
-        return true
+        requireNotNull(room) { "No such room" }
+        return room
+    }
+
+    fun changeStatus(number: Int, status: String) {
+        roomClient.changeStatus(number, status)
     }
 
 }
