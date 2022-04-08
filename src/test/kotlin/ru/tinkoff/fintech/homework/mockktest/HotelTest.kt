@@ -3,6 +3,10 @@ package ru.tinkoff.fintech.homework.mockktest
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.ninjasquad.springmockk.MockkBean
+import io.kotest.assertions.throwables.shouldNotThrow
+import io.kotest.assertions.throwables.shouldNotThrowAny
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.assertions.throwables.shouldThrowAny
 import io.kotest.core.spec.style.FeatureSpec
 import io.kotest.core.test.TestCase
 import io.kotest.core.test.TestResult
@@ -29,11 +33,14 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
     override fun extensions(): List<Extension> = listOf(SpringExtension)
 
     override fun beforeEach(testCase: TestCase) {
-        every { roomClient.getRoomForCheckIn(any()) } answers { listOfRoom.find { it.type == firstArg() } }
-        every { roomClient.getRoomByNumber(any()) } answers { listOfRoom.find { it.number == firstArg() }!! }
-        every { roomClient.changeStatus(any(), any()) } answers {
-            listOfRoom.find { it.number == firstArg() }!!.status = secondArg()
+        every { roomClient.getRoomByType(any()) } answers { listOfRoom.filter { it.type == firstArg() }.toSet() }
+        every { roomClient.checkIn(any(), any()) } answers {
+            listOfRoom.filter { it == secondArg() }.first().status = "occupied"
         }
+        every { roomClient.checkOut(any(), any()) } answers {
+            listOfRoom.filter { it == secondArg() }.first().status = "free"
+        }
+        every { roomClient.getRoom(any()) } answers { listOfRoom.find { it.number == firstArg() } }
 
 
     }
@@ -47,48 +54,53 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
             scenario("success") {
                 val room = checkIn("deluxe")
 
-                if (room.status == "free") changeStatus(room.number, "occupied")
-
                 room should {
                     it.number shouldBe 3
                     it.type shouldBe "deluxe"
                     it.pricePerNight shouldBe 20.0
-                    it.status shouldBe "free"
+                    it.status shouldBe "occupied"
+                }
+            }
+            scenario("occupied") {
+                shouldThrowAny { checkIn("deluxe") }
+            }
+
+        }
+        feature("check out") {
+            scenario("check in after check out") {
+
+                shouldNotThrowAny { checkOut(1) }
+
+                val room = checkIn("standard")
+
+                room should {
+                    it.number shouldBe 1
+                    it.type shouldBe "standard"
+                    it.pricePerNight shouldBe 10.0
+                    it.status shouldBe "occupied"
                 }
             }
         }
-        feature("check out") {
-            scenario("success") {
-                val room = checkOut(1)
-
-                if (room.status == "occupied") changeStatus(room.number, "free")
-
-                room.status shouldBe "occupied"
-
-            }
-        }
-
-
     }
 
     fun checkIn(type: String, status: HttpStatus = HttpStatus.OK): Room =
-        mockMvc.get("/hotel/check-in?type={type}", type).readResponse()
+        mockMvc.post("/hotel/check-in?type={type}", type).readResponse(status)
 
     fun checkOut(number: Int, status: HttpStatus = HttpStatus.OK): Room =
-        mockMvc.get("/hotel/check-out?number={number}", number).readResponse()
+        mockMvc.post("/hotel/check-out?number={number}", number).readResponse(status)
 
-    fun changeStatus(number: Int, status: String) {
-        mockMvc.patch("/hotel/change-status?number={number}&status={status}", number, status)
-    }
-
-
-    private inline fun <reified T> ResultActionsDsl.readResponse(expectedStatus: HttpStatus = HttpStatus.OK): T = this
-        .andExpect { status { isEqualTo(expectedStatus.value()) } }
-        .andReturn().response.getContentAsString(Charsets.UTF_8)
-        .let { if (T::class == String::class) it as T else objectMapper.readValue(it) }
+    fun getRoom(number: Int): Room =
+        mockMvc.get("/hotel/room/{number}", number).readResponse()
 
 
-    var listOfRoom = mutableSetOf(
+    private inline fun <reified T> ResultActionsDsl.readResponse(expectedStatus: HttpStatus = HttpStatus.OK): T =
+        this
+            .andExpect { status { isEqualTo(expectedStatus.value()) } }
+            .andReturn().response.getContentAsString(Charsets.UTF_8)
+            .let { if (T::class == String::class) it as T else objectMapper.readValue(it) }
+
+
+    var listOfRoom = setOf(
         Room(1, "standard", 10.0, "occupied"),
         Room(2, "standard", 10.0, "free"),
         Room(3, "deluxe", 20.0, "free"),
