@@ -16,7 +16,7 @@ class Reception(private val roomClient: RoomClient) {
 
     fun checkOut(number: Int) {
         val room = getRoom(number)
-        roomClient.checkOut(number, room)
+        roomClient.checkOut(room.number, room)
     }
 
     fun getRoomByType(type: String): Set<Room> {

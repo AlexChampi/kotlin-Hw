@@ -68,9 +68,7 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
         }
         feature("check out") {
             scenario("check in after check out") {
-
                 shouldNotThrowAny { checkOut(1) }
-
                 val room = checkIn("standard")
 
                 room should {
