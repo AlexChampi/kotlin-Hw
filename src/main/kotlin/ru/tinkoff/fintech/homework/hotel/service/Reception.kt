@@ -10,11 +10,8 @@ class Reception(private val roomClient: RoomClient) {
     fun checkIn(type: String): Room {
         val room = getRoomByType(type).find { it.status == "free" }
         requireNotNull(room) { "No available room" }
-
-
         roomClient.checkIn(room.number, room)
-        val result = getRoom(room.number)
-        return result
+        return getRoom(room.number)
     }
 
     fun checkOut(number: Int) {
