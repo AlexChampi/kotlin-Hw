@@ -3,10 +3,11 @@ package ru.tinkoff.fintech.homework.hotel.room.service
 import org.springframework.stereotype.Service
 import ru.tinkoff.fintech.homework.hotel.room.service.client.RoomDao
 import ru.tinkoff.fintech.homework.hotel.common.model.Room
+import ru.tinkoff.fintech.homework.hotel.common.model.Status
 
 @Service
 class RoomService(private val roomDao: RoomDao) {
-    fun getRoomByType(type: String): Set<Room> =
+    fun getRoomsByType(type: String): Set<Room> =
         roomDao.getRoomByType(type)
 
 
@@ -16,7 +17,7 @@ class RoomService(private val roomDao: RoomDao) {
         return result
     }
 
-    fun changeStatus(number: Int, status: String) {
+    fun changeStatus(number: Int, status: Status) {
         roomDao.changeStatus(number, status)
     }
 }

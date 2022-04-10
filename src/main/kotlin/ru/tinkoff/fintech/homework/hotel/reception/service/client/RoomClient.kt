@@ -7,13 +7,14 @@ import org.springframework.web.client.getForObject
 import org.springframework.web.client.*
 import org.springframework.web.client.HttpClientErrorException.NotFound
 import ru.tinkoff.fintech.homework.hotel.common.model.Room
+import ru.tinkoff.fintech.homework.hotel.common.model.Status
 
 @Service
 class RoomClient(
     private val restTemplate: RestTemplate,
     @Value("\${room.address}") private val roomAddress: String
 ) {
-    fun getRoomByType(type: String): Set<Room> = restTemplate.exchange<Set<Room>>(
+    fun getRoomsByType(type: String): Set<Room> = restTemplate.exchange<Set<Room>>(
         "$roomAddress/room?type={type}",
         HttpMethod.GET,
         null,
@@ -28,7 +29,7 @@ class RoomClient(
             null
         }
 
-    fun changeStatus(number: Int, status: String) {
+    fun changeStatus(number: Int, status: Status) {
         restTemplate.patchForObject<Void>("$roomAddress/room/{number}", status, number)
     }
 

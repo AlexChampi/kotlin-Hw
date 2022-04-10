@@ -2,6 +2,7 @@ package ru.tinkoff.fintech.homework.hotel.room.service.client
 
 import org.springframework.stereotype.Service
 import ru.tinkoff.fintech.homework.hotel.common.model.Room
+import ru.tinkoff.fintech.homework.hotel.common.model.Status
 
 @Service
 class RoomDao(
@@ -13,8 +14,8 @@ class RoomDao(
     fun getRoom(number: Int): Room? =
         rooms.find { it.number == number }
 
-    fun changeStatus(number: Int, newStatus: String) {
-        rooms.find { it.number == number }!!.status = newStatus
+    fun changeStatus(number: Int, newStatus: Status) {
+        rooms.first().status = newStatus
     }
 
 

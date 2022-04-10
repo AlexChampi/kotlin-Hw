@@ -18,7 +18,9 @@ import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.*
 import ru.tinkoff.fintech.homework.hotel.room.service.client.RoomDao
 import ru.tinkoff.fintech.homework.hotel.common.model.Room
+import ru.tinkoff.fintech.homework.hotel.common.model.Status.*
 import ru.tinkoff.fintech.homework.hotel.reception.service.client.RoomClient
+
 
 
 @SpringBootTest
@@ -41,7 +43,7 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
         }
 
         every { roomClient.getRoom(any()) } answers { roomDAO.getRoom(firstArg()) }
-        every { roomClient.getRoomByType(any()) } answers { roomDAO.getRoomByType(firstArg()) }
+        every { roomClient.getRoomsByType(any()) } answers { roomDAO.getRoomByType(firstArg()) }
         every { roomClient.changeStatus(any(), any()) } answers { roomDAO.changeStatus(firstArg(), secondArg()) }
     }
 
@@ -58,7 +60,7 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
                     it.number shouldBe 3
                     it.type shouldBe "deluxe"
                     it.pricePerNight shouldBe 20.0
-                    it.status shouldBe "free"
+                    it.status shouldBe FREE
                 }
             }
         }
@@ -70,7 +72,7 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
                     it.number shouldBe 3
                     it.type shouldBe "deluxe"
                     it.pricePerNight shouldBe 20.0
-                    it.status shouldBe "occupied"
+                    it.status shouldBe OCCUPIED
                 }
             }
         }
@@ -84,7 +86,7 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
                     it.number shouldBe 3
                     it.type shouldBe "deluxe"
                     it.pricePerNight shouldBe 20.0
-                    it.status shouldBe "free"
+                    it.status shouldBe FREE
                 }
             }
         }
@@ -111,11 +113,11 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
 
 
     var listOfRoom = setOf(
-        Room(1, "standard", 10.0, "occupied"),
-        Room(2, "standard", 10.0, "free"),
-        Room(3, "deluxe", 20.0, "free"),
-        Room(4, "family", 15.0, "occupied"),
-        Room(5, "superior", 17.0, "free")
+        Room(1, "standard", 10.0, OCCUPIED),
+        Room(2, "standard", 10.0, FREE),
+        Room(3, "deluxe", 20.0, FREE),
+        Room(4, "family", 15.0, OCCUPIED),
+        Room(5, "superior", 17.0, FREE)
     )
 
 }
