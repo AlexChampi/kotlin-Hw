@@ -95,10 +95,10 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
     }
 
     fun checkIn(type: String, status: HttpStatus = HttpStatus.OK): Room =
-        mockMvc.patch("/hotel/check-in?type={type}", type).readResponse()
+        mockMvc.post("/hotel/check-in?type={type}", type).readResponse()
 
     fun checkOut(number: Int, status: HttpStatus = HttpStatus.OK) {
-        mockMvc.patch("/hotel/check-out?number={number}", number)
+        mockMvc.post("/hotel/check-out?number={number}", number)
     }
 
     fun getRoom(number: Int): Room =
