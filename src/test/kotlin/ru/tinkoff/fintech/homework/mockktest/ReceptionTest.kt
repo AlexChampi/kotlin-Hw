@@ -22,10 +22,9 @@ import ru.tinkoff.fintech.homework.hotel.common.model.Status.*
 import ru.tinkoff.fintech.homework.hotel.reception.service.client.RoomClient
 
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
-class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMapper) : FeatureSpec() {
+class ReceptionTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMapper) : FeatureSpec() {
 
     @MockkBean
     private lateinit var roomDAO: RoomDao
@@ -95,14 +94,14 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
     }
 
     fun checkIn(type: String, status: HttpStatus = HttpStatus.OK): Room =
-        mockMvc.post("/hotel/check-in?type={type}", type).readResponse()
+        mockMvc.post("/reception/check-in?type={type}", type).readResponse()
 
     fun checkOut(number: Int, status: HttpStatus = HttpStatus.OK) {
-        mockMvc.post("/hotel/check-out?number={number}", number)
+        mockMvc.post("/reception/check-out?number={number}", number)
     }
 
     fun getRoom(number: Int): Room =
-        mockMvc.get("/hotel/room/{number}", number).readResponse()
+        mockMvc.get("/reception/room/{number}", number).readResponse()
 
 
     private inline fun <reified T> ResultActionsDsl.readResponse(expectedStatus: HttpStatus = HttpStatus.OK): T =

@@ -1,12 +1,12 @@
 package ru.tinkoff.fintech.homework.hotel.common.model
 
-enum class Status {
-    FREE, OCCUPIED
-}
-
-class Room(
+data class Room(
     val number: Int,
     val type: String,
     val pricePerNight: Double,
     var status: Status
 )
+
+enum class Status {
+    FREE, OCCUPIED
+}

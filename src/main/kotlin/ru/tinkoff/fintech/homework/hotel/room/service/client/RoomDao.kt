@@ -15,7 +15,7 @@ class RoomDao(
         rooms.find { it.number == number }
 
     fun changeStatus(number: Int, newStatus: Status) {
-        rooms.first().status = newStatus
+        rooms.first { it.number == number }.status = newStatus
     }
 
 

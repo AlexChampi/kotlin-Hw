@@ -7,7 +7,7 @@ import ru.tinkoff.fintech.homework.hotel.common.model.Status.FREE
 import ru.tinkoff.fintech.homework.hotel.common.model.Status.OCCUPIED
 
 @Service
-class Reception(private val roomClient: RoomClient) {
+class ReceptionService(private val roomClient: RoomClient) {
     fun checkIn(type: String): Room {
         val room = getRoomByType(type).find { it.status == FREE }
         requireNotNull(room) { "No available room" }

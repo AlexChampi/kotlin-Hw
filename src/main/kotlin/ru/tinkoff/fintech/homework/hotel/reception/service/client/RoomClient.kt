@@ -15,7 +15,7 @@ class RoomClient(
     @Value("\${room.address}") private val roomAddress: String
 ) {
     fun getRoomsByType(type: String): Set<Room> = restTemplate.exchange<Set<Room>>(
-        "$roomAddress/room?type={type}",
+        "$roomAddress$GET_ROOMS_BY_TYPE",
         HttpMethod.GET,
         null,
         type
@@ -24,14 +24,18 @@ class RoomClient(
 
     fun getRoom(number: Int): Room? =
         try {
-            restTemplate.getForObject("$roomAddress/room/{number}", number)
+            restTemplate.getForObject("$roomAddress$GET_ROOM_BY_NUMBER", number)
         } catch (e: NotFound) {
             null
         }
 
     fun changeStatus(number: Int, status: Status) {
-        restTemplate.patchForObject<Void>("$roomAddress/room/{number}", status, number)
+        restTemplate.patchForObject<Void>("$roomAddress$CHANGE_ROOM_STATUS", number, status)
     }
-
-
 }
+
+private const val GET_ROOMS_BY_TYPE = "/room?type={type}"
+private const val GET_ROOM_BY_NUMBER = "/room/{number}"
+private const val CHANGE_ROOM_STATUS = "/room/{number}?status={status}"
+
+

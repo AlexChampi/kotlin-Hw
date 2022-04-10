@@ -1,18 +1,17 @@
 package ru.tinkoff.fintech.homework.hotel.reception
 
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import ru.tinkoff.fintech.homework.hotel.reception.service.Reception
+import ru.tinkoff.fintech.homework.hotel.reception.service.ReceptionService
 import ru.tinkoff.fintech.homework.hotel.common.model.Room
 
 @RestController
-@RequestMapping("/hotel")
-class ReceptionController(private val reception: Reception) {
+@RequestMapping("/reception")
+class ReceptionController(private val reception: ReceptionService) {
 
     @PostMapping("/check-in")
     fun checkIn(@RequestParam type: String): Room =
