@@ -1,4 +1,4 @@
-package ru.tinkoff.fintech.homework.model
+package ru.tinkoff.fintech.homework.hotel.common.model
 
 class Room(
     val number: Int,

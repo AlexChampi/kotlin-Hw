@@ -17,8 +17,8 @@ import io.mockk.every
 import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.*
 import ru.tinkoff.fintech.homework.hotel.room.service.client.RoomDao
-import ru.tinkoff.fintech.homework.model.Room
-import ru.tinkoff.fintech.homework.hotel.service.client.RoomClient
+import ru.tinkoff.fintech.homework.hotel.common.model.Room
+import ru.tinkoff.fintech.homework.hotel.reception.service.client.RoomClient
 
 
 @SpringBootTest

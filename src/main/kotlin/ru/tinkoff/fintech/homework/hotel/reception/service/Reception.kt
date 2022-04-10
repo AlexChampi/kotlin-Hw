@@ -1,8 +1,8 @@
-package ru.tinkoff.fintech.homework.hotel.service
+package ru.tinkoff.fintech.homework.hotel.reception.service
 
 import org.springframework.stereotype.Service
-import ru.tinkoff.fintech.homework.hotel.service.client.RoomClient
-import ru.tinkoff.fintech.homework.model.Room
+import ru.tinkoff.fintech.homework.hotel.reception.service.client.RoomClient
+import ru.tinkoff.fintech.homework.hotel.common.model.Room
 
 
 @Service

@@ -1,4 +1,4 @@
-package ru.tinkoff.fintech.homework.hotel.service.client
+package ru.tinkoff.fintech.homework.hotel.reception.service.client
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpMethod
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.client.getForObject
 import org.springframework.web.client.*
 import org.springframework.web.client.HttpClientErrorException.NotFound
-import ru.tinkoff.fintech.homework.model.Room
+import ru.tinkoff.fintech.homework.hotel.common.model.Room
 
 @Service
 class RoomClient(
@@ -29,12 +29,7 @@ class RoomClient(
         }
 
     fun changeStatus(number: Int, status: String) {
-        try {
-            restTemplate.patchForObject<Void>("$roomAddress/room/{number}", status, number)
-        } catch (e: Exception) {
-            null
-        }
-
+        restTemplate.patchForObject<Void>("$roomAddress/room/{number}", status, number)
     }
 
 

@@ -1,7 +1,7 @@
 package ru.tinkoff.fintech.homework.hotel.room.service.client
 
 import org.springframework.stereotype.Service
-import ru.tinkoff.fintech.homework.model.Room
+import ru.tinkoff.fintech.homework.hotel.common.model.Room
 
 @Service
 class RoomDao(
