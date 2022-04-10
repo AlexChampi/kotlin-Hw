@@ -33,7 +33,7 @@ class ReceptionTest(private val mockMvc: MockMvc, private val objectMapper: Obje
 
     override fun beforeEach(testCase: TestCase) {
         every { roomDao.getRoom(any()) } answers { listOfRoom.find { it.number == firstArg() } }
-        every { roomDao.getRoomsByType(any()) } answers { listOfRoom.filter { it.status == firstArg() }.toSet() }
+        every { roomDao.getRoomsByType(any()) } answers { listOfRoom.filter { it.type == firstArg() }.toSet() }
         every { roomDao.changeStatus(any(), any()) } answers {
             listOfRoom.toMutableSet().find { it.number == firstArg() }!!.status = secondArg()
         }
@@ -55,6 +55,17 @@ class ReceptionTest(private val mockMvc: MockMvc, private val objectMapper: Obje
                     it.status shouldBe FREE
                 }
             }
+
+            scenario("check in") {
+                val room = checkIn("deluxe")
+
+                room should {
+                    it.number shouldBe 3
+                    it.type shouldBe "deluxe"
+                    it.pricePerNight shouldBe 20.0
+                    it.status shouldBe OCCUPIED
+                }
+            }
             scenario("check out") {
                 checkOut(1)
 
@@ -68,16 +79,7 @@ class ReceptionTest(private val mockMvc: MockMvc, private val objectMapper: Obje
                 }
             }
 
-            scenario("check in") {
-                val room = checkIn("deluxe")
 
-                room should {
-                    it.number shouldBe 3
-                    it.type shouldBe "deluxe"
-                    it.pricePerNight shouldBe 20.0
-                    it.status shouldBe OCCUPIED
-                }
-            }
 
         }
 

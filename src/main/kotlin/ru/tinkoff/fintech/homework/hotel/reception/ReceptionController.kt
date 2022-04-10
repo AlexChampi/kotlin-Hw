@@ -23,7 +23,7 @@ class ReceptionController(private val reception: ReceptionService) {
     }
 
     @GetMapping("/rooms")
-    fun getRoomByType(@RequestParam type: String): Set<Room> =
+    fun getRoomsByType(@RequestParam type: String): Set<Room> =
         reception.getRoomsByType(type)
 
     @GetMapping("/room/{number}")

@@ -17,7 +17,6 @@ class RoomController(private val roomService: RoomService) {
     fun getRoomsByType(@RequestParam type: String): Set<Room> =
         roomService.getRoomsByType(type)
 
-
     @GetMapping("/{number}")
     fun getRoom(@PathVariable number: Int): Room =
         roomService.getRoom(number)
