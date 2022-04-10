@@ -68,7 +68,7 @@ class ReceptionTest(private val mockMvc: MockMvc, private val objectMapper: Obje
                 }
             }
 
-            scenario("chek in") {
+            scenario("check in") {
                 val room = checkIn("deluxe")
 
                 room should {
