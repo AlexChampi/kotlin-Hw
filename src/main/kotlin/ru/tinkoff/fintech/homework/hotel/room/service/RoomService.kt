@@ -18,6 +18,6 @@ class RoomService(private val roomDao: RoomDao) {
     }
 
     fun changeStatus(number: Int, status: Status) {
-        roomDao.changeStatus(number, status)
+        try {roomDao.changeStatus(number, status) } catch (e: Exception) {null}
     }
 }

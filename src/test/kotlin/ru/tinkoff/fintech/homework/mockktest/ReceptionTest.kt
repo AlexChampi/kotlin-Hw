@@ -22,7 +22,7 @@ import ru.tinkoff.fintech.homework.hotel.common.model.Status.*
 import ru.tinkoff.fintech.homework.hotel.reception.service.client.RoomClient
 
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc
 class ReceptionTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMapper) : FeatureSpec() {
 
@@ -44,8 +44,8 @@ class ReceptionTest(private val mockMvc: MockMvc, private val objectMapper: Obje
     }
 
     init {
-        feature("get room") {
-            scenario("success") {
+        feature("reception") {
+            scenario("get room") {
                 val room = getRoom(3)
 
                 room should {
@@ -55,9 +55,20 @@ class ReceptionTest(private val mockMvc: MockMvc, private val objectMapper: Obje
                     it.status shouldBe FREE
                 }
             }
-        }
-        feature("check in") {
-            scenario("success") {
+            scenario("check out") {
+                checkOut(1)
+
+                val room = getRoom(1)
+
+                room should {
+                    it.number shouldBe 1
+                    it.type shouldBe "standard"
+                    it.pricePerNight shouldBe 10.0
+                    it.status shouldBe FREE
+                }
+            }
+
+            scenario("chek in") {
                 val room = checkIn("deluxe")
 
                 room should {
@@ -67,20 +78,7 @@ class ReceptionTest(private val mockMvc: MockMvc, private val objectMapper: Obje
                     it.status shouldBe OCCUPIED
                 }
             }
-        }
-        feature("check out") {
-            scenario("success") {
-                checkOut(1)
 
-                val room = getRoom(3)
-
-                room should {
-                    it.number shouldBe 3
-                    it.type shouldBe "deluxe"
-                    it.pricePerNight shouldBe 20.0
-                    it.status shouldBe FREE
-                }
-            }
         }
 
 
