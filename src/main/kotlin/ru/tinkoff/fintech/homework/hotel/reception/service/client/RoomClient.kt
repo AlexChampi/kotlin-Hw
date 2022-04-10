@@ -30,7 +30,7 @@ class RoomClient(
         }
 
     fun changeStatus(number: Int, status: Status) {
-        restTemplate.patchForObject<Void>("$roomAddress$CHANGE_ROOM_STATUS", number, status)
+        restTemplate.patchForObject<Void>("$roomAddress$CHANGE_ROOM_STATUS", null, number, status)
     }
 }
 
