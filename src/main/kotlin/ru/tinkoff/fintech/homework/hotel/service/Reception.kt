@@ -1,32 +1,31 @@
 package ru.tinkoff.fintech.homework.hotel.service
 
 import org.springframework.stereotype.Service
-import ru.tinkoff.fintech.homework.hotel.service.client.ReceptionClient
+import ru.tinkoff.fintech.homework.hotel.service.client.RoomClient
 import ru.tinkoff.fintech.homework.model.Room
 
 
 @Service
-class Reception(private val receptionClient: ReceptionClient) {
+class Reception(private val roomClient: RoomClient) {
     fun checkIn(type: String): Room {
-        val room = getRoomByType(type).find { it.status == "free" }!!
-        //requireNotNull(room) { "No available room" }
-        receptionClient.changeStatus(room, "occupied")
+        val room = getRoomByType(type).find { it.status == "free" }
+        requireNotNull(room) { "No available room" }
+        roomClient.changeStatus(room.number, "occupied")
         return getRoom(room.number)
     }
 
     fun checkOut(number: Int) {
-        val room = getRoom(number)
-        receptionClient.changeStatus(room, "free")
+        roomClient.changeStatus(number, "free")
     }
 
     fun getRoomByType(type: String): Set<Room> {
-        val result = receptionClient.getRoomByType(type)
+        val result = roomClient.getRoomByType(type)
         result.forEach { requireNotNull(it) { "No such type of room" } }
-        return result as Set<Room>
+        return result
     }
 
     fun getRoom(number: Int): Room {
-        val room = receptionClient.getRoom(number)
+        val room = roomClient.getRoom(number)
         requireNotNull(room) { "No such room" }
         return room
     }

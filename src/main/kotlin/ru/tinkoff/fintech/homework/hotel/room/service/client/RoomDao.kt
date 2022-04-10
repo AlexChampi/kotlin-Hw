@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 import ru.tinkoff.fintech.homework.model.Room
 
 @Service
-class RoomDAO(
+class RoomDao(
     private val rooms: Set<Room>
 ) {
     fun getRoomByType(type: String): Set<Room> =

@@ -9,25 +9,32 @@ import org.springframework.web.client.HttpClientErrorException.NotFound
 import ru.tinkoff.fintech.homework.model.Room
 
 @Service
-class ReceptionClient(
+class RoomClient(
     private val restTemplate: RestTemplate,
     @Value("\${room.address}") private val roomAddress: String
 ) {
     fun getRoomByType(type: String): Set<Room> = restTemplate.exchange<Set<Room>>(
-        "$roomAddress/room/by-type?type=${type}",
-        HttpMethod.GET
+        "$roomAddress/room?type={type}",
+        HttpMethod.GET,
+        null,
+        type
     ).body.orEmpty()
 
 
     fun getRoom(number: Int): Room? =
         try {
-            restTemplate.getForObject("$roomAddress/room/by-number?number={number}", number)
+            restTemplate.getForObject("$roomAddress/room/{number}", number)
         } catch (e: NotFound) {
             null
         }
 
-    fun changeStatus(room: Room, status: String) {
-        restTemplate.patchForObject<Room?>("$roomAddress/room/change-status?newStatus={status}", room, status)
+    fun changeStatus(number: Int, status: String) {
+        try {
+            restTemplate.patchForObject<Void>("$roomAddress/room/{number}", status, number)
+        } catch (e: Exception) {
+            null
+        }
+
     }
 
 

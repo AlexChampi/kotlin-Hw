@@ -3,8 +3,6 @@ package ru.tinkoff.fintech.homework.mockktest
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.ninjasquad.springmockk.MockkBean
-import io.kotest.assertions.throwables.shouldNotThrowAny
-import io.kotest.assertions.throwables.shouldThrowAny
 import io.kotest.core.spec.style.FeatureSpec
 import io.kotest.core.test.TestCase
 import io.kotest.core.test.TestResult
@@ -12,18 +10,15 @@ import io.mockk.clearAllMocks
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import io.kotest.core.extensions.Extension
-import io.kotest.engine.test.logging.debug
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.mockk.every
-import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.*
-import ru.tinkoff.fintech.homework.hotel.room.service.client.RoomClient
-import ru.tinkoff.fintech.homework.hotel.room.service.client.RoomDAO
+import ru.tinkoff.fintech.homework.hotel.room.service.client.RoomDao
 import ru.tinkoff.fintech.homework.model.Room
-import ru.tinkoff.fintech.homework.hotel.service.client.ReceptionClient
+import ru.tinkoff.fintech.homework.hotel.service.client.RoomClient
 
 
 @SpringBootTest
@@ -31,10 +26,7 @@ import ru.tinkoff.fintech.homework.hotel.service.client.ReceptionClient
 class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMapper) : FeatureSpec() {
 
     @MockkBean
-    private lateinit var receptionClient: ReceptionClient
-
-    @MockkBean
-    private lateinit var roomDAO: RoomDAO
+    private lateinit var roomDAO: RoomDao
 
     @MockkBean
     private lateinit var roomClient: RoomClient
@@ -47,17 +39,10 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
         every { roomDAO.changeStatus(any(), any()) } answers {
             listOfRoom.toMutableSet().find { it.number == firstArg() }!!.status = secondArg()
         }
-//        every { receptionClient.getRoom(any()) } answers { roomClient.getRoom(firstArg()) }
-//        every { receptionClient.getRoomByType(any()) } answers { roomClient.getRoomByType(firstArg()) }
-//        every { receptionClient.changeStatus(any(), any()) } answers {
-//            roomClient.changeStatus(
-//                firstArg(),
-//                secondArg()
-//            )
-//        }
-//        every { roomClient.getRoom(any()) } answers { roomDAO.getRoom(firstArg()) }
-//        every { roomClient.getRoomByType(any()) } answers { roomDAO.getRoomByType(firstArg()) }
-//        every { roomClient.changeStatus(any(), any()) } answers { roomDAO.changeStatus(firstArg(), secondArg()) }
+
+        every { roomClient.getRoom(any()) } answers { roomDAO.getRoom(firstArg()) }
+        every { roomClient.getRoomByType(any()) } answers { roomDAO.getRoomByType(firstArg()) }
+        every { roomClient.changeStatus(any(), any()) } answers { roomDAO.changeStatus(firstArg(), secondArg()) }
     }
 
     override fun afterEach(testCase: TestCase, result: TestResult) {
@@ -111,7 +96,7 @@ class HotelTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMa
         mockMvc.patch("/hotel/check-in?type={type}", type).readResponse()
 
     fun checkOut(number: Int, status: HttpStatus = HttpStatus.OK) {
-        mockMvc.post("/hotel/check-out?number={number}", number)
+        mockMvc.patch("/hotel/check-out?number={number}", number)
     }
 
     fun getRoom(number: Int): Room =

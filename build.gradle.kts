@@ -11,7 +11,6 @@ group = "ru.tinkoff.fintech.homework"
 version = "1.0-SNAPSHOT"
 
 repositories {
-    google()
     mavenCentral()
 }
 
