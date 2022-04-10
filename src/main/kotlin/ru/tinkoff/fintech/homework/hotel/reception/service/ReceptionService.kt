@@ -9,7 +9,7 @@ import ru.tinkoff.fintech.homework.hotel.common.model.Status.OCCUPIED
 @Service
 class ReceptionService(private val roomClient: RoomClient) {
     fun checkIn(type: String): Room {
-        val room = getRoomByType(type).find { it.status == FREE }
+        val room = getRoomsByType(type).find { it.status == FREE }
         requireNotNull(room) { "No available room" }
         roomClient.changeStatus(room.number, OCCUPIED)
         return getRoom(room.number)
@@ -19,11 +19,9 @@ class ReceptionService(private val roomClient: RoomClient) {
         roomClient.changeStatus(number, FREE)
     }
 
-    fun getRoomByType(type: String): Set<Room> {
-        val result = roomClient.getRoomsByType(type)
-        result.forEach { requireNotNull(it) { "No such type of room" } }
-        return result
-    }
+    fun getRoomsByType(type: String): Set<Room> =
+        roomClient.getRoomsByType(type)
+
 
     fun getRoom(number: Int): Room {
         val room = roomClient.getRoom(number)
