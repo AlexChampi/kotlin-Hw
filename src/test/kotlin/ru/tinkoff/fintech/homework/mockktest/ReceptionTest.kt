@@ -27,23 +27,16 @@ import ru.tinkoff.fintech.homework.hotel.reception.service.client.RoomClient
 class ReceptionTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMapper) : FeatureSpec() {
 
     @MockkBean
-    private lateinit var roomDAO: RoomDao
-
-    @MockkBean
-    private lateinit var roomClient: RoomClient
+    private lateinit var roomDao: RoomDao
 
     override fun extensions(): List<Extension> = listOf(SpringExtension)
 
     override fun beforeEach(testCase: TestCase) {
-        every { roomDAO.getRoom(any()) } answers { listOfRoom.find { it.number == firstArg() } }
-        every { roomDAO.getRoomByType(any()) } answers { listOfRoom.filter { it.status == firstArg() }.toSet() }
-        every { roomDAO.changeStatus(any(), any()) } answers {
+        every { roomDao.getRoom(any()) } answers { listOfRoom.find { it.number == firstArg() } }
+        every { roomDao.getRoomsByType(any()) } answers { listOfRoom.filter { it.status == firstArg() }.toSet() }
+        every { roomDao.changeStatus(any(), any()) } answers {
             listOfRoom.toMutableSet().find { it.number == firstArg() }!!.status = secondArg()
         }
-
-        every { roomClient.getRoom(any()) } answers { roomDAO.getRoom(firstArg()) }
-        every { roomClient.getRoomsByType(any()) } answers { roomDAO.getRoomByType(firstArg()) }
-        every { roomClient.changeStatus(any(), any()) } answers { roomDAO.changeStatus(firstArg(), secondArg()) }
     }
 
     override fun afterEach(testCase: TestCase, result: TestResult) {

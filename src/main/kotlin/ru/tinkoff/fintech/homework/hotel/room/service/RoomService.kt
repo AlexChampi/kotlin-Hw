@@ -8,7 +8,7 @@ import ru.tinkoff.fintech.homework.hotel.common.model.Status
 @Service
 class RoomService(private val roomDao: RoomDao) {
     fun getRoomsByType(type: String): Set<Room> =
-        roomDao.getRoomByType(type)
+        roomDao.getRoomsByType(type)
 
 
     fun getRoom(number: Int): Room {
