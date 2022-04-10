@@ -1,6 +1,6 @@
 spring:
   application.name: HomeWork3
   profiles.active: test
-server.port: 4000
+server.port: 5000
 
-room.address: http://localhost:4001
+room.address: http://localhost:5000
