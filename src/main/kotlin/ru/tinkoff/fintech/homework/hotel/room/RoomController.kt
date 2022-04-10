@@ -14,7 +14,7 @@ import ru.tinkoff.fintech.homework.hotel.common.model.Status
 @RequestMapping("/room")
 class RoomController(private val roomService: RoomService) {
     @GetMapping
-    fun getRoomByType(@RequestParam type: String): Set<Room> =
+    fun getRoomsByType(@RequestParam type: String): Set<Room> =
         roomService.getRoomsByType(type)
 
 
