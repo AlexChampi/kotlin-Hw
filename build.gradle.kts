@@ -21,6 +21,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.springdoc:springdoc-openapi-ui:1.6.6")
+    implementation("org.apache.httpcomponents:httpclient:4.5.13")
     implementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("com.ninja-squad:springmockk:3.1.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

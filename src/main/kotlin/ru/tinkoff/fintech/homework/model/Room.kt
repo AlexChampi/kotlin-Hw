@@ -1,6 +1,6 @@
 package ru.tinkoff.fintech.homework.model
 
-data class Room(
+class Room(
     val number: Int,
     val type: String,
     val pricePerNight: Double,

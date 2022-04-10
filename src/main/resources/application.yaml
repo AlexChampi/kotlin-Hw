@@ -3,4 +3,5 @@ spring:
   profiles.active: dev
 server.port: 5000
 
-room.address: http://localhost:5001
+room.address: http://localhost:5000
+room.storage.address: http://localhost:5001
