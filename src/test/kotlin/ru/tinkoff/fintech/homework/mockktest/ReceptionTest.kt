@@ -15,33 +15,17 @@ import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import org.springframework.http.HttpStatus
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.*
-import ru.tinkoff.fintech.homework.hotel.room.service.client.RoomDao
+import ru.tinkoff.fintech.homework.hotel.room.service.client.DevRoomDao
 import ru.tinkoff.fintech.homework.hotel.common.model.Room
 import ru.tinkoff.fintech.homework.hotel.common.model.Status.*
-import ru.tinkoff.fintech.homework.hotel.reception.service.client.RoomClient
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc
+@ActiveProfiles("jdbc")
 class ReceptionTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMapper) : FeatureSpec() {
-
-    @MockkBean
-    private lateinit var roomDao: RoomDao
-
-    override fun extensions(): List<Extension> = listOf(SpringExtension)
-
-    override fun beforeEach(testCase: TestCase) {
-        every { roomDao.getRoom(any()) } answers { listOfRoom.find { it.number == firstArg() } }
-        every { roomDao.getRoomsByType(any()) } answers { listOfRoom.filter { it.type == firstArg() }.toSet() }
-        every { roomDao.changeStatus(any(), any()) } answers {
-            listOfRoom.toMutableSet().find { it.number == firstArg() }!!.status = secondArg()
-        }
-    }
-
-    override fun afterEach(testCase: TestCase, result: TestResult) {
-        clearAllMocks()
-    }
 
     init {
         feature("reception") {
@@ -80,7 +64,6 @@ class ReceptionTest(private val mockMvc: MockMvc, private val objectMapper: Obje
             }
 
 
-
         }
 
 
@@ -102,14 +85,5 @@ class ReceptionTest(private val mockMvc: MockMvc, private val objectMapper: Obje
             .andExpect { status { isEqualTo(expectedStatus.value()) } }
             .andReturn().response.getContentAsString(Charsets.UTF_8)
             .let { if (T::class == String::class) it as T else objectMapper.readValue(it) }
-
-
-    var listOfRoom = setOf(
-        Room(1, "standard", 10.0, OCCUPIED),
-        Room(2, "standard", 10.0, FREE),
-        Room(3, "deluxe", 20.0, FREE),
-        Room(4, "family", 15.0, OCCUPIED),
-        Room(5, "superior", 17.0, FREE)
-    )
 
 }
