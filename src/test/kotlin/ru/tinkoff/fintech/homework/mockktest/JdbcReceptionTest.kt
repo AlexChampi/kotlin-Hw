@@ -2,22 +2,14 @@ package ru.tinkoff.fintech.homework.mockktest
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.FeatureSpec
-import io.kotest.core.test.TestCase
-import io.kotest.core.test.TestResult
-import io.mockk.clearAllMocks
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import io.kotest.core.extensions.Extension
-import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
-import io.mockk.every
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.*
-import ru.tinkoff.fintech.homework.hotel.room.service.client.DevRoomDao
 import ru.tinkoff.fintech.homework.hotel.common.model.Room
 import ru.tinkoff.fintech.homework.hotel.common.model.Status.*
 
@@ -25,7 +17,7 @@ import ru.tinkoff.fintech.homework.hotel.common.model.Status.*
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc
 @ActiveProfiles("jdbc")
-class ReceptionTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMapper) : FeatureSpec() {
+class JdbcReceptionTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMapper) : FeatureSpec() {
 
     init {
         feature("reception") {

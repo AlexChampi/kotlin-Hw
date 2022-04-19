@@ -1,8 +1,6 @@
 package ru.tinkoff.fintech.homework.hotel.common.model
 
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity
 @Table(name = "rooms")
@@ -17,3 +15,4 @@ data class Room(
 enum class Status {
     FREE, OCCUPIED
 }
+

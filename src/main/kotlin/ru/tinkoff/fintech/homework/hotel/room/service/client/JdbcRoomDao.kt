@@ -14,14 +14,17 @@ class JdbcRoomDao(
     private val jdbcTemplate: JdbcTemplate
 ) : RoomDao {
     override fun getRoomsByType(type: String): Set<Room> =
-        jdbcTemplate.query("select * from rooms where type = ?", DataClassRowMapper(Room::class.java), type).toSet()
+        jdbcTemplate.query(GET_ROOMS_BY_TYPE, DataClassRowMapper(Room::class.java), type).toSet()
 
 
     override fun getRoom(number: Int): Room? =
-        jdbcTemplate.queryForObject("select * from rooms where number = ?", DataClassRowMapper(Room::class.java), number)
+        jdbcTemplate.queryForObject(GET_ROOM_BY_NUMBER, DataClassRowMapper(Room::class.java), number)
 
     override fun changeStatus(number: Int, newStatus: Status) {
-        jdbcTemplate.update("update rooms set status = '${newStatus}' where number = ?", number)
+        jdbcTemplate.update(UPDATE_STATUS, newStatus.name, number)
     }
 }
 
+private const val GET_ROOMS_BY_TYPE = "select * from rooms where type = ?"
+private const val GET_ROOM_BY_NUMBER = "select * from rooms where number = ?"
+private const val UPDATE_STATUS = "update rooms set status = ? where number = ?"

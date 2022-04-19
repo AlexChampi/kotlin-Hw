@@ -6,7 +6,7 @@ import ru.tinkoff.fintech.homework.hotel.common.model.Room
 import ru.tinkoff.fintech.homework.hotel.common.model.Status
 
 @Service
-@Profile("dev", "test")
+@Profile("dev")
 class DevRoomDao(
     private val rooms: Set<Room>
 ) : RoomDao {

@@ -8,6 +8,6 @@ spring:
     url: jdbc:h2:mem:testdb
     username: Aleksandr
     password: 12345
-server.port: 8000
+server.port: 9000
 
-room.address: http://localhost:8000
+room.address: http://localhost:9000
