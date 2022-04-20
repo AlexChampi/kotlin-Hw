@@ -9,6 +9,7 @@ data class Room(
     val number: Int,
     val type: String,
     val pricePerNight: Double,
+    @Enumerated(EnumType.STRING)
     var status: Status
 )
 

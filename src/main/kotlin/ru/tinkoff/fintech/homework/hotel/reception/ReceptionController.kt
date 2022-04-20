@@ -29,5 +29,4 @@ class ReceptionController(private val reception: ReceptionService) {
     @GetMapping("/room/{number}")
     fun getRoom(@PathVariable number: Int): Room =
         reception.getRoom(number)
-
 }

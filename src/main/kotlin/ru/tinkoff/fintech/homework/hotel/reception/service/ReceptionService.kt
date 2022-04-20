@@ -22,11 +22,9 @@ class ReceptionService(private val roomClient: RoomClient) {
     fun getRoomsByType(type: String): Set<Room> =
         roomClient.getRoomsByType(type)
 
-
     fun getRoom(number: Int): Room {
         val room = roomClient.getRoom(number)
         requireNotNull(room) { "No such room" }
         return room
     }
-
 }

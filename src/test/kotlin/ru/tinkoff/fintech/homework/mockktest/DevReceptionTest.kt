@@ -5,22 +5,14 @@ import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.test.TestCase
 import io.kotest.core.test.TestResult
 import io.mockk.clearAllMocks
-import io.kotest.core.extensions.Extension
-import io.kotest.extensions.spring.SpringExtension
 import io.mockk.every
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.web.servlet.*
-import ru.tinkoff.fintech.homework.hotel.room.service.client.RoomDao
+import org.springframework.test.web.servlet.MockMvc
 import ru.tinkoff.fintech.homework.hotel.common.model.Room
-import ru.tinkoff.fintech.homework.hotel.common.model.Status.*
+import ru.tinkoff.fintech.homework.hotel.common.model.Status.FREE
+import ru.tinkoff.fintech.homework.hotel.common.model.Status.OCCUPIED
+import ru.tinkoff.fintech.homework.hotel.room.service.client.RoomDao
 
-
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-//@AutoConfigureMockMvc
-//@EnableAsync
 @ActiveProfiles("dev")
 class DevReceptionTest(mockMvc: MockMvc, objectMapper: ObjectMapper) :
     ReceptionTests(mockMvc, objectMapper) {
@@ -32,7 +24,9 @@ class DevReceptionTest(mockMvc: MockMvc, objectMapper: ObjectMapper) :
         every { roomDao.getRoom(any()) } answers { listOfRoom.find { it.number == firstArg() } }
         every { roomDao.getRoomsByType(any()) } answers { listOfRoom.filter { it.type == firstArg() }.toSet() }
         every { roomDao.changeStatus(any(), any()) } answers {
-            listOfRoom.toMutableSet().find { it.number == firstArg() }!!.status = secondArg()
+            val room = listOfRoom.first { it.number == firstArg() }
+            listOfRoom.remove(room)
+            listOfRoom.add(room.copy(status = secondArg()))
         }
     }
 
@@ -44,8 +38,7 @@ class DevReceptionTest(mockMvc: MockMvc, objectMapper: ObjectMapper) :
         runTests()
     }
 
-
-    var listOfRoom = setOf(
+    var listOfRoom = mutableSetOf(
         Room(1, "standard", 10.0, OCCUPIED),
         Room(2, "standard", 10.0, FREE),
         Room(3, "deluxe", 20.0, FREE),

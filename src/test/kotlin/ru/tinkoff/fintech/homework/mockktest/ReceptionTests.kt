@@ -7,28 +7,21 @@ import io.kotest.core.spec.style.FeatureSpec
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
-import jdk.jfr.Enabled
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.autoconfigure.web.servlet.MockMvcAutoConfiguration
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
-import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.MockMvcBuilder
 import org.springframework.test.web.servlet.ResultActionsDsl
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import ru.tinkoff.fintech.homework.hotel.common.model.Room
 import ru.tinkoff.fintech.homework.hotel.common.model.Status
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc
 @DirtiesContext
-abstract class  ReceptionTests(private val mockMvc: MockMvc, private val objectMapper: ObjectMapper) : FeatureSpec() {
+abstract class ReceptionTests(private val mockMvc: MockMvc, private val objectMapper: ObjectMapper) : FeatureSpec() {
 
     override fun extensions(): List<Extension> = listOf(SpringExtension)
 
@@ -67,8 +60,6 @@ abstract class  ReceptionTests(private val mockMvc: MockMvc, private val objectM
                     it.status shouldBe Status.FREE
                 }
             }
-
-
         }
     }
 
