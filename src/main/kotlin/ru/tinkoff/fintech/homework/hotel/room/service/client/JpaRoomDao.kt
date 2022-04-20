@@ -13,7 +13,7 @@ class JpaRoomDao(
     private val jpaRoomRepository: JpaRoomRepository
 ) : RoomDao {
     override fun getRoomsByType(type: String): Set<Room> =
-        jpaRoomRepository.getRoomByType(type).toSet()
+        jpaRoomRepository.findRoomByType(type).toSet()
 
 
     override fun getRoom(number: Int): Room? =

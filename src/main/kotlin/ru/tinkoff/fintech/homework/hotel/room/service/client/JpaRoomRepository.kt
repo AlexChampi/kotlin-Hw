@@ -14,10 +14,6 @@ interface JpaRoomRepository : JpaRepository<Room, Int> {
     @Query("update Room r set r.status = :status where r.number = :number")
     fun changeStatus(@Param("number") number: Int, @Param("status") status: Status)
 
-    @Query("select r from Room r where r.status = :type")
-    fun getRoomByType(@Param("type") type: String): MutableList<Room>
-
-    @Query("select r from Room r where r.number = :number")
-    fun getRoomByNumber(@Param("number") number: Int): Room
+    fun findRoomByType(type: String): List<Room>
 }
 

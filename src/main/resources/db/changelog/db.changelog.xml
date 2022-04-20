@@ -11,7 +11,7 @@
                 number IDENTITY PRIMARY KEY,
                 type VARCHAR(50) NOT NULL,
                 price_per_night FLOAT NOT NULL,
-                status ENUM('OCCUPIED', 'FREE') NOT NULL
+                status ENUM('FREE', 'OCCUPIED') NOT NULL
             )
         </sql>
     </changeSet>
