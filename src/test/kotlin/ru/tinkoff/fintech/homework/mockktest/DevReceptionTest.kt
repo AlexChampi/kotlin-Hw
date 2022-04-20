@@ -28,8 +28,6 @@ class DevReceptionTest(mockMvc: MockMvc, objectMapper: ObjectMapper) :
     @MockkBean
     private lateinit var roomDao: RoomDao
 
-    override fun extensions(): List<Extension> = listOf(SpringExtension)
-
     override suspend fun beforeEach(testCase: TestCase) {
         every { roomDao.getRoom(any()) } answers { listOfRoom.find { it.number == firstArg() } }
         every { roomDao.getRoomsByType(any()) } answers { listOfRoom.filter { it.type == firstArg() }.toSet() }
