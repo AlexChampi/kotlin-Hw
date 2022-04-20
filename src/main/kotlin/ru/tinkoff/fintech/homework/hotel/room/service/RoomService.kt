@@ -1,9 +1,9 @@
 package ru.tinkoff.fintech.homework.hotel.room.service
 
 import org.springframework.stereotype.Service
-import ru.tinkoff.fintech.homework.hotel.room.service.client.RoomDao
 import ru.tinkoff.fintech.homework.hotel.common.model.Room
 import ru.tinkoff.fintech.homework.hotel.common.model.Status
+import ru.tinkoff.fintech.homework.hotel.room.service.client.RoomDao
 
 @Service
 class RoomService(private val roomDao: RoomDao) {

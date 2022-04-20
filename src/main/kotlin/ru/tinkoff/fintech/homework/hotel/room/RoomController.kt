@@ -25,6 +25,4 @@ class RoomController(private val roomService: RoomService) {
     fun changeStatus(@PathVariable number: Int, @RequestParam status: Status) {
         roomService.changeStatus(number, status)
     }
-
-
 }

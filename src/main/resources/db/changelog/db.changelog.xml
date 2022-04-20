@@ -1,0 +1,27 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet author="Aleksandr" id="create">
+        <sql>
+            CREATE TABLE rooms
+            (
+                number IDENTITY PRIMARY KEY,
+                type VARCHAR(50) NOT NULL,
+                price_per_night FLOAT NOT NULL,
+                status ENUM('FREE', 'OCCUPIED') NOT NULL
+            )
+        </sql>
+    </changeSet>
+    <changeSet author="Aleksandr" id="init">
+        <sql>
+           INSERT INTO rooms (type, price_per_night, status) VALUES ('standard', 10.0, 'OCCUPIED'),
+                                    ('standard', 10.0, 'FREE'),
+                                    ('deluxe', 20.0, 'FREE'),
+                                    ('family', 15.0, 'OCCUPIED'),
+                                    ('superior', 17.0, 'FREE')
+        </sql>
+    </changeSet>
+</databaseChangeLog>
