@@ -1,6 +1,6 @@
 spring:
   application.name: HomeWork3
-  profiles.active: jpa
+  profiles.active: dev
   liquibase:
     change-log: /db/changelog/db.changelog.xml
   datasource:

@@ -38,7 +38,7 @@ class DevReceptionTest(mockMvc: MockMvc, objectMapper: ObjectMapper) :
         runTests()
     }
 
-    var listOfRoom = mutableSetOf(
+    private val listOfRoom = mutableSetOf(
         Room(1, "standard", 10.0, OCCUPIED),
         Room(2, "standard", 10.0, FREE),
         Room(3, "deluxe", 20.0, FREE),
