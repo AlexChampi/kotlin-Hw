@@ -9,7 +9,7 @@ data class Room(
     val number: Int,
     val type: String,
     val pricePerNight: Double,
-    val status: Status
+    var status: Status
 )
 
 enum class Status {
