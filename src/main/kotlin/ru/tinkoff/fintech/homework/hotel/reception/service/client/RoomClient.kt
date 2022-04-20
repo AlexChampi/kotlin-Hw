@@ -37,5 +37,3 @@ class RoomClient(
 private const val GET_ROOMS_BY_TYPE = "/room?type={type}"
 private const val GET_ROOM_BY_NUMBER = "/room/{number}"
 private const val CHANGE_ROOM_STATUS = "/room/{number}?status={status}"
-
-

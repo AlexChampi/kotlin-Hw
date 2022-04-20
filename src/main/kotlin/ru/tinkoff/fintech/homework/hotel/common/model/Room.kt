@@ -16,4 +16,3 @@ data class Room(
 enum class Status {
     FREE, OCCUPIED
 }
-

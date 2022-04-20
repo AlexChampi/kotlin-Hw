@@ -45,6 +45,4 @@ class DevReceptionTest(mockMvc: MockMvc, objectMapper: ObjectMapper) :
         Room(4, "family", 15.0, OCCUPIED),
         Room(5, "superior", 17.0, FREE)
     )
-
 }
-

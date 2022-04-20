@@ -10,5 +10,4 @@ class JdbcReceptionTest(mockMvc: MockMvc, objectMapper: ObjectMapper) : Receptio
     init {
         runTests()
     }
-
 }

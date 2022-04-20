@@ -8,7 +8,6 @@ import org.springframework.test.web.servlet.MockMvc
 class JaoReceptionTest(mockMvc: MockMvc, objectMapper: ObjectMapper) :
     ReceptionTests(mockMvc, objectMapper) {
 
-
     init {
         runTests()
     }
