@@ -4,10 +4,9 @@ import java.util.concurrent.LinkedBlockingQueue
 class ThreadPool(private val threadAmount: Int) : Executor {
     private val taskQueue = LinkedBlockingQueue<Runnable>()
     private val threadsList: MutableList<WorkerThread> = ArrayList()
-    private var threadsStatus = true
 
     init {
-        if (threadAmount > THREADS_LIMIT) throw IllegalArgumentException()
+        if (threadAmount > THREADS_LIMIT) throw IllegalArgumentException("QWWWWWWWWWWWWWWWWWWWW")
         repeat(threadAmount) {
             val thread = WorkerThread()
             threadsList.add(thread)
@@ -17,25 +16,35 @@ class ThreadPool(private val threadAmount: Int) : Executor {
 
     override fun execute(task: Runnable) {
         taskQueue.add(task)
-        (threadsList.first() as Object).notify()
+        threadsList.forEach {
+            synchronized(it) {
+                if (it.isRunnig == true) {
+                    (it as Object).notify()
+                }
+            }
+        }
     }
 
     fun shutdown() {
-        threadsStatus = false
         threadsList.forEach {
             it.interrupt()
         }
     }
 
     private inner class WorkerThread : Thread() {
+        var isRunnig = true
         override fun run() {
-            while (threadsStatus == true) {
+            while (isRunnig) {
                 synchronized(this) {
                     if (!taskQueue.isEmpty()) {
                         val task = taskQueue.poll()
                         task.run()
                     } else {
-                        (this as Object).wait()
+                        try {
+                            (this as Object).wait()
+                        } catch (e: Exception) {
+                            isRunnig = false
+                        }
                     }
                 }
 
