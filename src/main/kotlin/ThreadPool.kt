@@ -40,11 +40,7 @@ class ThreadPool(private val threadAmount: Int) : Executor {
                         val task = taskQueue.poll()
                         task.run()
                     } else {
-                        try {
-                            (this as Object).wait()
-                        } catch (e: Exception) {
-                            isRunnig = false
-                        }
+                        (this as Object).wait()
                     }
                 }
 
