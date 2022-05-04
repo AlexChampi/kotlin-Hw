@@ -6,7 +6,7 @@ class ThreadPool(private val threadAmount: Int) : Executor {
     private val threadsList: MutableList<WorkerThread> = ArrayList()
 
     init {
-        if (threadAmount > THREADS_LIMIT) throw IllegalArgumentException("QWWWWWWWWWWWWWWWWWWWW")
+        if (threadAmount > THREADS_LIMIT) throw IllegalArgumentException()
         repeat(threadAmount) {
             val thread = WorkerThread()
             threadsList.add(thread)
