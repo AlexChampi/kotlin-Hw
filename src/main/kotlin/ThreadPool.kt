@@ -1,6 +1,10 @@
 import java.util.concurrent.Executor
 import java.util.concurrent.LinkedBlockingQueue
 
+enum class ThreadStatus {
+    STOPPED, RUNNING, WAITING
+}
+
 class ThreadPool(private val threadAmount: Int) : Executor {
     private val taskQueue = LinkedBlockingQueue<Runnable>()
     private val threadsList: MutableList<WorkerThread> = ArrayList()
@@ -17,7 +21,7 @@ class ThreadPool(private val threadAmount: Int) : Executor {
     override fun execute(task: Runnable) {
         taskQueue.add(task)
         try {
-            val thread = threadsList.first { it.isWaiting == true }
+            val thread = threadsList.first { it.status == ThreadStatus.WAITING }
             synchronized(thread) {
                 (thread as Object).notify()
             }
@@ -28,14 +32,27 @@ class ThreadPool(private val threadAmount: Int) : Executor {
 
 
     fun shutdown() {
-        threadsList.forEach {
-            it.interrupt()
+        var isAllThreadsStopped = false
+        while (!isAllThreadsStopped) {
+            isAllThreadsStopped = true
+            threadsList.forEach {
+                if (it.status == ThreadStatus.RUNNING) {
+                    isAllThreadsStopped = false
+                } else if (it.status == ThreadStatus.WAITING) {
+                    it.m_interrupt()
+                }
+            }
         }
     }
 
     private inner class WorkerThread : Thread() {
-        var isWaiting = true
+        var status = ThreadStatus.WAITING
             private set
+
+        fun m_interrupt() {
+            this.interrupt()
+            this.status = ThreadStatus.STOPPED
+        }
 
         override fun run() {
             while (true) {
@@ -43,10 +60,10 @@ class ThreadPool(private val threadAmount: Int) : Executor {
                     val task = taskQueue.poll()
                     if (task != null) {
                         task.run()
-                        isWaiting = false
+                        status = ThreadStatus.RUNNING
                     } else {
                         (this as Object).wait()
-                        isWaiting = false
+                        status = ThreadStatus.WAITING
                     }
                 }
             }
