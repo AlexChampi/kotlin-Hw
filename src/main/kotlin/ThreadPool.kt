@@ -16,14 +16,14 @@ class ThreadPool(private val threadAmount: Int) : Executor {
 
     override fun execute(task: Runnable) {
         taskQueue.add(task)
-        val thread = threadsList.first { it.isWaiting == true }
-        if (thread != null) {
+        try {
+            val thread = threadsList.first { it.isWaiting == true }
             synchronized(thread) {
                 (thread as Object).notify()
-//            thread.isBusy = true
             }
+        } catch (e: Exception) {
+            println("All threads are busy")
         }
-
     }
 
 
@@ -35,6 +35,8 @@ class ThreadPool(private val threadAmount: Int) : Executor {
 
     private inner class WorkerThread : Thread() {
         var isWaiting = true
+            private set
+
         override fun run() {
             while (true) {
                 synchronized(this) {
@@ -47,7 +49,6 @@ class ThreadPool(private val threadAmount: Int) : Executor {
                         isWaiting = false
                     }
                 }
-
             }
         }
     }
