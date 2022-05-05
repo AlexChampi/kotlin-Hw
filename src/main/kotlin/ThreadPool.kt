@@ -6,7 +6,7 @@ class ThreadPool(private val threadAmount: Int) : Executor {
     private val threadsList: MutableList<WorkerThread> = ArrayList()
 
     init {
-        if (threadAmount > THREADS_LIMIT) throw IllegalArgumentException()
+        if (threadAmount > THREADS_LIMIT) throw IllegalArgumentException("Max threads number $THREADS_LIMIT. Input amount $threadAmount")
         repeat(threadAmount) {
             val thread = WorkerThread()
             threadsList.add(thread)
@@ -16,14 +16,14 @@ class ThreadPool(private val threadAmount: Int) : Executor {
 
     override fun execute(task: Runnable) {
         taskQueue.add(task)
-        threadsList.forEach {
-            synchronized(it) {
-                if (it.isRunnig == true) {
-                    (it as Object).notify()
-                }
-            }
+
+        synchronized(this)
+        {
+            val thread = threadsList.first()
+            (thread as Object).notify()
         }
     }
+
 
     fun shutdown() {
         threadsList.forEach {
@@ -32,18 +32,16 @@ class ThreadPool(private val threadAmount: Int) : Executor {
     }
 
     private inner class WorkerThread : Thread() {
-        var isRunnig = true
         override fun run() {
-            while (isRunnig) {
+            while (true) {
                 synchronized(this) {
-                    if (!taskQueue.isEmpty()) {
-                        val task = taskQueue.poll()
+                    val task = taskQueue.poll()
+                    if (task != null) {
                         task.run()
                     } else {
                         (this as Object).wait()
                     }
                 }
-
             }
         }
     }
