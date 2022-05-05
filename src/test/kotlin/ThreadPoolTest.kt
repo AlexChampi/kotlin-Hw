@@ -13,7 +13,7 @@ class ThreadPoolTest : FeatureSpec() {
     private val task = mockk<Runnable>()
 
     override fun beforeEach(testCase: TestCase) {
-        every { task.run() } answers { sleep(5) }
+        every { task.run() } answers { sleep(500) }
     }
 
     override fun afterEach(testCase: TestCase, result: TestResult) {
@@ -31,7 +31,7 @@ class ThreadPoolTest : FeatureSpec() {
                     threadPool.execute(task)
                 }
 
-                verify(exactly = taskAmount) { task.run() }
+                verify(exactly = poolSize) { task.run() }
             }
 
         }
